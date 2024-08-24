@@ -1,5 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import User from "./user.entity";
 
 @Entity()
 export default class Task extends BaseEntity {
@@ -11,5 +11,11 @@ export default class Task extends BaseEntity {
 
     @Column({default: false})
     completed!: boolean
+
+    @Column()
+    userId!: number
+
+    @ManyToOne(() => User, user => user.tasks)
+    user!: User
 
 }
