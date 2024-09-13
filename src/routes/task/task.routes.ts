@@ -6,5 +6,7 @@ const taskRoutes = Router()
 
 taskRoutes.get("/", TaskController.index)
 taskRoutes.post("/", authMiddleware, TaskController.store)
+taskRoutes.get("/:id", TaskController.show)
+taskRoutes.delete("/:id", TaskController.delete)
 
 export default taskRoutes

@@ -2,7 +2,7 @@ import User from "../../models/user.entity";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { MongoServerClosedError } from "typeorm";
-import Token from "../../models/tolken.entity";
+import Token from "../../models/token.entity";
 
 
 export default class UserController{
