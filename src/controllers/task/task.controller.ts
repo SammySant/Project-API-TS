@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import Task from "../../models/task.entity";
-import { timeLog } from "console";
+import { error, timeLog } from "console";
 
 export default class TaskController {
     static async index(req: Request, res: Response){
+
+        const {userId} = req.headers
+        if(!userId) return res.status(401).json({error: "Usuário não autenticado!"})
+
         const tasks = await Task.find({
             select: {
                 user: {
@@ -23,9 +27,9 @@ export default class TaskController {
         const {title, completed} = req.body
         const {userId} = req.headers
 
-        if(!title || !userId){
-            return res.status(400).json({msg: "Título obrigatório"})
-        }
+        if(!userId) return res.status(401).json({error: "Usuário não autenticado!"})
+        if(!title) return res.status(400).json({error: "O título é obrigatório!"})
+
 
         const task = new Task()
         task.title = title
@@ -38,23 +42,30 @@ export default class TaskController {
 
     static async show(req: Request, res: Response){
         const {id} = req.params
+        const {userId} = req.headers
 
         if(!id || isNaN(Number(id))){
             return res.status(400).json({error: "O id é obrigatório!"})
         }
 
-        const task = await Task.findOneBy({id: Number(id)})
+        if(!userId) return res.status(401).json({error: "Usuário não autenticado!"})
+
+        const task = await Task.findOneBy({id: Number(id), userId: Number(userId)})
         return res.json(task)
     }
 
     static async delete(req: Request, res: Response){
         const {id} = req.params
+        const {userId} = req.headers
 
         if(!id || isNaN(Number(id))){
             return res.status(400).json({error: "O id é obrigatório!"})
         }
 
-        const task = await Task.findOneBy({id: Number(id)})
+        if(!userId) return res.status(401).json({error: "Usuário não autenticado!"})
+        
+
+        const task = await Task.findOneBy({id: Number(id), userId: Number(userId)})
         if(!task){
             return res.status(404).json({error: "Task não encontrada!"})
         }
@@ -66,12 +77,15 @@ export default class TaskController {
     static async update(req: Request, res: Response){
         const {id} = req.params
         const {title, completed} = req.body
+        const {userId} = req.headers
 
         if(!id || isNaN(Number(id))){
             return res.status(400).json({error: "O id é obrigatório"})
         }
 
-        const task = await Task.findOneBy({id: Number(id)})
+        if(!userId) return res.status(401).json({error: "Usuário não autenticado!"})
+
+        const task = await Task.findOneBy({id: Number(id), userId:  Number(userId)})
         if(!task){
             return res.status(404).json({error: "Task não encontrada"})
         }
