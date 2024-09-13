@@ -1,10 +1,11 @@
+import { join } from "path";
 import { DataSource } from "typeorm";
 
 const dataBase = new DataSource({
     type: 'sqlite',
-    database: './src/database/database.sqlite',
+    database: process.env.DATABASE || './src/database/database.sqlite',
     entities: [
-        './src/models/*.ts',
+        join(__dirname, "..", './src/models/*.{ts, js}'),
     ],
     logging: true, // log das queries executadas
     synchronize: true //cria as tabelas automaticamente

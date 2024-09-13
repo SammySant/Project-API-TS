@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Task from "./task.entity";
-import Token from "./tolken.entity";
+import Token from "./token.entity";
 
 @Entity()
 export default class User extends BaseEntity{

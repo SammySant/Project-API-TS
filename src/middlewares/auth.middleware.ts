@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import Token from "../models/tolken.entity";
+import Token from "../models/token.entity";
 
 export default async function authMiddleware(req: Request, res: Response, next: NextFunction){
     const {authorization} = req.headers
